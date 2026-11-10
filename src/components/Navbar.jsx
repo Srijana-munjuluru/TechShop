@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-// import '../App.css'
 import { FaSearch, FaShoppingCart, FaUser, FaTimes } from 'react-icons/fa'
-
-
 import Login from "./Login.jsx";
 import Signup from "./Signup.jsx";
 import { useSelector } from 'react-redux';
@@ -31,12 +28,10 @@ const Navbar = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Get all products from Redux
     const productsData = useSelector(
         (state) => state.products.products
     );
 
-    // Filter products based on search text
     const searchResults = productsData.filter((product) =>
         product.title
             .toLowerCase()
@@ -59,12 +54,7 @@ const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto">
                             <li className='nav-item'>
-                                 <button
-                                    className="nav-icon-btn"
-                                    onClick={() =>
-                                        setShowSearch(!showSearch)
-                                    }
-                                >
+                                <button className="nav-icon-btn" onClick={() => setShowSearch(!showSearch)}>
                                     <FaSearch />
                                 </button>
                             </li>
@@ -91,7 +81,6 @@ const Navbar = () => {
                                                 Login / Signup
                                             </button>
                                             <hr />
-
                                             {
                                                 dropdownMenu.map((item) => (
                                                     <p className="private-login" key={item.id}>{item.link}</p>
@@ -99,12 +88,9 @@ const Navbar = () => {
                                             }
                                         </div>
                                     )}
-
                             </li>
-
                         </ul>
                     </div>
-
                 </div>
             </nav>
 
@@ -118,7 +104,6 @@ const Navbar = () => {
                                 setShowSignup(true);
                             }} />
                         </div>
-
                     </div>
                 )}
 
@@ -133,59 +118,36 @@ const Navbar = () => {
                             }} />
                         </div>
                     </div>
-                )}
+                )
+            }
 
-                {showSearch && (
-                <div className="search-container">
+            {
+                showSearch && (
+                    <div className="search-container">
+                        <div className="search-box">
+                            <input type="text" placeholder="Search products..." value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)} autoFocus />
 
-                    <div className="search-box">
-
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            value={searchTerm}
-                            onChange={(e) =>
-                                setSearchTerm(e.target.value)
-                            }
-                            autoFocus
-                        />
-
-                        <button
-                            className="close-search"
-                            onClick={handleCloseSearch}
-                        >
-                            <FaTimes />
-                        </button>
-
-                    </div>
-
-
-                    {/* Search Results */}
-                    {searchTerm && (
-                        <div className="search-results">
-
-                            {searchResults.length > 0 ? (
-                                searchResults.map((product) => (
-                                    <Link
-                                        to={`/product/${product.id}`}
-                                        key={product.id}
-                                        className="search-result-item"
-                                        onClick={handleCloseSearch}
-                                    >
-                                        {product.title}
-                                    </Link>
-                                ))
-                            ) : (
-                                <p className="no-results">
-                                    No products found
-                                </p>
-                            )}
-
+                            <button className="close-search" onClick={handleCloseSearch}>
+                                <FaTimes />
+                            </button>
                         </div>
-                    )}
 
-                </div>
-            )}
+                        {
+                            searchTerm && (
+                                <div className="search-results">
+                                    {
+                                        searchResults.length > 0 ? (searchResults.map((product) => (
+                                            <Link to={`/product/${product.id}`} key={product.id} className="search-result-item"
+                                                onClick={handleCloseSearch}>
+                                                {product.title}
+                                            </Link>
+                                        ))) : (<p className="no-results">No products found</p>
+                                        )}
+                                </div>
+                            )}
+                    </div>
+                )}
         </>
     );
 };

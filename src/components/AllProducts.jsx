@@ -12,13 +12,11 @@ function AllProducts() {
 
     const dispatch = useDispatch();
 
-    // Selected filters
     const [selectedSort, setSelectedSort] = useState("");
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [addedProductId, setAddedProductId] = useState(null);
 
-    // Add/remove brand filter
     const handleBrandChange = (brand) => {
         setSelectedBrands((previousBrands) =>
             previousBrands.includes(brand)
@@ -27,7 +25,6 @@ function AllProducts() {
         );
     };
 
-    // Add/remove category filter
     const handleCategoryChange = (category) => {
         setSelectedCategories((previousCategories) =>
             previousCategories.includes(category)
@@ -36,7 +33,6 @@ function AllProducts() {
         );
     };
 
-    // Filter products
     let filteredProducts = productsData.filter((product) => {
 
         const brandMatch =
@@ -50,25 +46,21 @@ function AllProducts() {
         return brandMatch && categoryMatch;
     });
 
-    // Helper function for prices
     const getPrice = (price) => {
         return Number(
             String(price).replace(/[₹,]/g, "")
         );
     };
 
-    // Sort products
     if (selectedSort === "Price(Lowest First)") {
         filteredProducts = [...filteredProducts].sort(
-            (a, b) =>
-                getPrice(a.finalPrice) - getPrice(b.finalPrice)
+            (a, b) => getPrice(a.finalPrice) - getPrice(b.finalPrice)
         );
     }
 
     if (selectedSort === "Price(Highest First)") {
         filteredProducts = [...filteredProducts].sort(
-            (a, b) =>
-                getPrice(b.finalPrice) - getPrice(a.finalPrice)
+            (a, b) => getPrice(b.finalPrice) - getPrice(a.finalPrice)
         );
     }
 
@@ -98,152 +90,92 @@ function AllProducts() {
 
     return (
         <>
-        <div className="products-page">
+            <div className="products-page">
 
-            {/* Sidebar */}
-            <aside className="filter-sidebar">
+                <aside className="filter-sidebar">
 
-                <h3>Sort By</h3>
-                <hr />
+                    <h3>Sort By</h3>
+                    <hr />
 
-                <div className="sort-menu">
-                    {sortMenu.map((item) => (
-                        <button
-                            key={item.id}
-                            className={
-                                selectedSort === item.title
-                                    ? "selected-sort"
-                                    : ""
-                            }
-                            onClick={() =>
-                                setSelectedSort(item.title)
-                            }
-                        >
-                            {item.title}
-                        </button>
-                    ))}
-                </div>
+                    <div className="sort-menu">
+                        {
+                            sortMenu.map((item) => (
+                                <button key={item.id} className={selectedSort === item.title ? "selected-sort" : ""}
+                                    onClick={() => setSelectedSort(item.title)}>
+                                    {item.title}
+                                </button>
+                            ))
+                        }
+                    </div>
 
-                <h3 className="filter-heading">Filter By</h3>
-                <hr />
+                    <h3 className="filter-heading">Filter By</h3>
+                    <hr />
 
-                {/* Brand Filters */}
-                <h4>Brands</h4>
+                    <h4>Brands</h4>
 
-                {brandsMenu.map((item) => (
-                    <label
-                        className="filter-option"
-                        key={item.id}
-                    >
-                        <input
-                            type="checkbox"
-                            checked={selectedBrands.includes(
-                                item.label
-                            )}
-                            onChange={() =>
-                                handleBrandChange(item.label)
-                            }
-                        />
+                    {
+                        brandsMenu.map((item) => (
+                            <label className="filter-option" key={item.id}>
+                                <input type="checkbox" checked={selectedBrands.includes(item.label)}
+                                    onChange={() => handleBrandChange(item.label)} />
+                                {item.label}
+                            </label>
+                        ))
+                    }
 
-                        {item.label}
-                    </label>
-                ))}
+                    <h4 className="category-heading">Category</h4>
 
-                {/* Category Filters */}
-                <h4 className="category-heading">
-                    Category
-                </h4>
+                    {
+                        categoryMenu.map((item) => (
+                            <label className="filter-option" key={item.id}>
+                                <input type="checkbox" checked={selectedCategories.includes(item.label)}
+                                    onChange={() => handleCategoryChange(item.label)} />
+                                {item.label}
+                            </label>
+                        ))
+                    }
 
-                {categoryMenu.map((item) => (
-                    <label
-                        className="filter-option"
-                        key={item.id}
-                    >
-                        <input
-                            type="checkbox"
-                            checked={selectedCategories.includes(
-                                item.label
-                            )}
-                            onChange={() =>
-                                handleCategoryChange(item.label)
-                            }
-                        />
+                    <button className="clear-filters" onClick={handleClearFilters}>
+                        Clear All Filters
+                    </button>
+                </aside>
 
-                        {item.label}
-                    </label>
-                ))}
-                
+                <main className="all-products">
+                    <h2>All Products</h2>
+                    <div className="products-grid">
+                        {
+                            filteredProducts.map((product) => (
+                                <div className="card product-page-card" key={product.id}>
+                                    <Link to={`/product/${product.id}`} className="product-link">
+                                        <img src={product.images[0]} alt={product.title} />
+                                        <p className="star">{"★".repeat(product.rateCount)}</p>
+                                        <h3>{product.title}</h3>
+                                        <p>{product.info}</p>
+                                    </Link>
 
-                {/* Clear All Filters Button */}
-                <button
-                    className="clear-filters"
-                    onClick={handleClearFilters}
-                >
-                    Clear All Filters
-                </button>
+                                    <hr />
 
-            </aside>
+                                    <p>₹{product.finalPrice}
+                                        <del style={{ color: "gray" }}>
+                                            ₹{product.originalPrice}
+                                        </del>
+                                    </p>
 
-
-
-            {/* Products Area */}
-            <main className="all-products">
-
-                <h2>All Products</h2>
-
-                <div className="products-grid">
-
-                    {filteredProducts.map((product) => (
-                        <div className="card product-page-card" key={product.id}>
-    <Link
-        to={`/product/${product.id}`}
-        className="product-link"
-    >
-        <img
-            src={product.images[0]}
-            alt={product.title}
-        />
-
-        <p className="star">
-            {"★".repeat(product.rateCount)}
-        </p>
-
-        <h3>{product.title}</h3>
-
-        <p>{product.info}</p>
-    </Link>
-
-    <hr />
-
-    <p>
-        ₹{product.finalPrice}
-        <del style={{ color: "gray" }}>
-            ₹{product.originalPrice}
-        </del>
-    </p>
-
-    <button
-        className={`addtocart ${
-            addedProductId === product.id ? "added" : ""
-        }`}
-        onClick={() => handleAddToCart(product)}
-    >
-        {addedProductId === product.id
-            ? "Added"
-            : "Add to Cart"}
-    </button>
-</div>
-                    ))}
-
-                </div>
-
-            </main>
-            
-        </div>
-        <Services />
+                                    <button className={`addtocart ${addedProductId === product.id ? "added" : ""}`}
+                                        onClick={() => handleAddToCart(product)}>
+                                        {
+                                            addedProductId === product.id ? "Added" : "Add to Cart"}
+                                    </button>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </main>
+            </div>
+            <Services />
         </>
     );
-    
+
 }
 
 export default AllProducts;

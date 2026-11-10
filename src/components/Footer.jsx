@@ -124,6 +124,7 @@ function Footer() {
             path: "/",
         },
     ];
+    
     return (
         <footer className="footer">
             <div className="footer-top">

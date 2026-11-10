@@ -22,38 +22,37 @@ function Slides() {
         pauseOnHover: true,
     };
 
-    // Use the same IDs as your productsData
     const products = [
         {
-            id: 9, // boAt Rockerz 255
+            id: 9,
             name: "boAt Rockerz 255",
             image: "/boat255r-1.png",
             price: "₹899",
             discount: "₹2,990",
         },
         {
-            id: 13, // JBL Endurance Run Sports
+            id: 13,
             name: "JBL Endurance Run Sports",
             image: "/jbl-endu-1.png",
             price: "₹999",
             discount: "₹1,599",
         },
         {
-            id: 14, // boAt Airdopes 203
+            id: 14,
             name: "boAt Airdopes 203",
             image: "/boat203-1.png",
             price: "₹1,074",
             discount: "₹3,999",
         },
         {
-            id: 2, // boAt Rockerz 518
+            id: 2,
             name: "boAt Rockerz 518",
             image: "/boat518-1.png",
             price: "₹1,299",
             discount: "₹3,990",
         },
         {
-            id: 8, // JBL Tune 760NC
+            id: 8,
             name: "JBL Tune 760NC",
             image: "/jbl760nc-1.png",
             price: "₹5,999",
@@ -66,33 +65,19 @@ function Slides() {
             <h2>Featured Products</h2>
 
             <Slider {...settings}>
-                {products.map((product) => (
-                    <div key={product.id}>
-                        <Link
-                            to={`/product/${product.id}`}
-                            className="slide-product-link"
-                        >
-                            <div className="product-card">
-                                <h5>{product.name}</h5>
-
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
-                                />
-
-                                <h5>
-                                    {product.price}
-
-                                    <span>
-                                        <del>
-                                            {product.discount}
-                                        </del>
-                                    </span>
-                                </h5>
-                            </div>
-                        </Link>
-                    </div>
-                ))}
+                {
+                    products.map((product) => (
+                        <div key={product.id}>
+                            <Link to={`/product/${product.id}`} className="slide-product-link">
+                                <div className="product-card">
+                                    <h5>{product.name}</h5>
+                                    <img src={product.image} alt={product.name} />
+                                    <h5>{product.price}<span><del>{product.discount}</del></span></h5>
+                                </div>
+                            </Link>
+                        </div>
+                    ))
+                }
             </Slider>
         </div>
     );

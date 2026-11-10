@@ -52,41 +52,22 @@ function ProdCards() {
             filteredProducts.map((product) => (
               <div className="col-lg-3" key={product.id}>
                 <div className="card">
-                  <Link
-                    to={`/product/${product.id}`}
-                    className="product-link"
-                  >
-                    <img
-                      src={product.images[0]}
-                      alt={product.title}
-                    />
-
-                    <p className="star">
-                      {"★".repeat(product.rateCount)}
-                    </p>
-
+                  <Link to={`/product/${product.id}`} className="product-link">
+                    <img src={product.images[0]} alt={product.title} />
+                    <p className="star">{"★".repeat(product.rateCount)}</p>
                     <h3>{product.title}</h3>
-
                     <p>{product.info}</p>
                   </Link>
 
                   <hr />
 
-                  <p>
-                    ₹{product.finalPrice}
-                    <del style={{ color: "gray" }}>
-                      ₹{product.originalPrice}
-                    </del>
+                  <p>₹{product.finalPrice}
+                    <del style={{ color: "gray" }}>₹{product.originalPrice}</del>
                   </p>
 
-                  <button
-                    className={`addtocart ${addedProductId === product.id ? "added" : ""
-                      }`}
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    {addedProductId === product.id
-                      ? "Added"
-                      : "Add to Cart"}
+                  <button className={`addtocart ${addedProductId === product.id ? "added" : ""}`}
+                    onClick={() => handleAddToCart(product)}>
+                    {addedProductId === product.id ? "Added" : "Add to Cart"}
                   </button>
                 </div>
               </div>

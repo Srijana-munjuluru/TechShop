@@ -31,27 +31,21 @@ function Carousel() {
                 <h1>Out, Or in. You</h1>
                 <h1>Choose</h1>
                 <p>₹9,999 <span> <del> ₹14,999</del></span></p>
-                <Link
-                                to="/product/1"
-                                className="shop-now-link"
-                            >
-                                <button className="btn1">
-                                    Shop Now
-                                </button>
-                            </Link>
+                <Link to="/product/1" className="shop-now-link">
+                  <button className="btn1">Shop Now</button>
+                </Link>
               </div>
+
               <div className="col-lg-4">
                 <Link to="/product/1">
-                                <img
-                                    src="jbl660nc-1.png"
-                                    alt="JBL Live 660NC"
-                                    className="image"
-                                />
-                            </Link>
+                  <img src="jbl660nc-1.png" alt="JBL Live 660NC" className="image" />
+                </Link>
               </div>
+
             </div>
           </div>
         </div>
+
         <div>
           <div className="hero">
             <h2 className='bgname'>In Ear</h2>
@@ -61,27 +55,21 @@ function Carousel() {
                 <h1>Featherweight For</h1>
                 <h1>Comfort All-Day.</h1>
                 <p>₹1,099 <span> <del> ₹2,999</del></span></p>
-                <Link
-                                to="/product/3"
-                                className="shop-now-link"
-                            >
-                                <button className="btn1">
-                                    Shop Now
-                                </button>
-                            </Link>
+                <Link to="/product/3" className="shop-now-link">
+                  <button className="btn1">Shop Now</button>
+                </Link>
               </div>
+
               <div className="col-lg-4">
                 <Link to="/product/3">
-                                <img
-                                    src="boat131-3.png"
-                                    alt="boAt Airdopes 131"
-                                    className="image"
-                                />
-                            </Link>
+                  <img src="boat131-3.png" alt="boAt Airdopes 131" className="image" />
+                </Link>
               </div>
+
             </div>
           </div>
         </div>
+
         <div>
           <div className="hero">
             <h2 className='bgname'>Over Ear</h2>
@@ -91,24 +79,17 @@ function Carousel() {
                 <h1>Give Your Favourite</h1>
                 <h1>Music A Boost.</h1>
                 <p>₹13,489 <span> <del> ₹19,990</del></span></p>
-                <Link
-                                to="/product/7"
-                                className="shop-now-link"
-                            >
-                                <button className="btn1">
-                                    Shop Now
-                                </button>
-                            </Link>
+                <Link to="/product/7" className="shop-now-link">
+                  <button className="btn1">Shop Now</button>
+                </Link>
               </div>
+
               <div className="col-lg-4">
                 <Link to="/product/7">
-                                <img
-                                    src="sonyXb910n-1.png"
-                                    alt="Sony WH-XB910N"
-                                    className="image"
-                                />
-                            </Link>
+                  <img src="sonyXb910n-1.png" alt="Sony WH-XB910N" className="image" />
+                </Link>
               </div>
+              
             </div>
           </div>
         </div>
