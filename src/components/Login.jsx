@@ -12,7 +12,7 @@ function Login({ openSignup }) {
 
             <h2>Login</h2>
 
-            <p className="auth-text">Don't have an account ?{" "}
+            <p className="auth-text">New to TechShop ?{" "}
                 <button type="button" className="text-link" onClick={openSignup}>Signup</button>
             </p>
 

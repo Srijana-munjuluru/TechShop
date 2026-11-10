@@ -107,8 +107,8 @@ function ProductDetails() {
                     <h2>{product.title}</h2>
                     <p className="product-info">{product.info}</p>
                     <div className="details-rating">
-                        <span className="stars">{"★".repeat(product.rateCount)}</span>
-                        <span className="rating-text">{product.rateCount}/5 Rating</span>
+                        <span className="stars">{"★".repeat(product.rateCount)} </span>
+                        <span className="rating-text"> | {product.ratings} Ratings</span>
                     </div>
                     <hr />
 
@@ -132,6 +132,8 @@ function ProductDetails() {
                         <div>No Cost EMI on Credit Card</div>
                         <div>Pay Later & Avail Cashback</div>
                     </div>
+                    
+                    <hr />
 
                     <button className={`details-add-cart ${added ? "added" : ""}`}
                         onClick={handleAddToCart}>{added ? "Added" : "Add to Cart"}

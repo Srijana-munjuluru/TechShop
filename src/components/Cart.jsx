@@ -1,9 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { FaTrash, FaPlus, FaMinus, FaShoppingCart } from "react-icons/fa";
+import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 
 import { increaseQuantity, decreaseQuantity, removeFromCart } from "../Redux/cartSlice";
+import { BsCartXFill } from "react-icons/bs";
 
 function Cart() {
 
@@ -24,9 +25,9 @@ function Cart() {
     if (cartItems.length === 0) {
         return (
             <div className="empty-cart">
-                <FaShoppingCart className="empty-cart-icon" />
+                <BsCartXFill className="empty-cart-icon" />
                 <h2>Your Cart is Empty</h2>
-                <Link to="/">
+                <Link to="/products">
                     <button>Start Shopping</button>
                 </Link>
             </div>

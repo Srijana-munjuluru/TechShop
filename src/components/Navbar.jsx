@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from 'react-router-dom'
 import { FaSearch, FaShoppingCart, FaUser, FaTimes } from 'react-icons/fa'
 import Login from "./Login.jsx";
@@ -17,6 +17,8 @@ const Navbar = () => {
     const [showUserPopup, setShowUserPopup] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [showSignup, setShowSignup] = useState(false);
+
+    const userMenuRef = useRef(null);
 
     const cartItems = useSelector((state) => state.cart.items);
 
@@ -43,9 +45,29 @@ const Navbar = () => {
         setSearchTerm("");
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                userMenuRef.current &&
+                !userMenuRef.current.contains(event.target)
+            ) {
+                setShowUserPopup(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+        };
+    }, []);
+
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: 'black' }}>
+            <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: '#111' }}>
                 <div className="container-fluid">
                     <Link to='/' className="navbar-brand" style={{ fontWeight: "bold" }}>Tech-Shop</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,40 +76,49 @@ const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto">
                             <li className='nav-item'>
-                                <button className="nav-icon-btn" onClick={() => setShowSearch(!showSearch)}>
-                                    <FaSearch />
-                                </button>
+                                <div className="nav-tooltip-wrapper">
+                                    <button className="nav-icon-btn" onClick={() => setShowSearch(!showSearch)}>
+                                        <FaSearch />
+                                    </button>
+                                    <span className="nav-tooltip">Search</span>
+                                </div>
                             </li>
                             <li className="nav-item">
-                                <Link to="/cart" className="nav-link active cart-icon"><FaShoppingCart />
-                                    {
-                                        cartCount > 0 && (<span className="cart-count">{cartCount}</span>)
-                                    }
-                                </Link>
+                                <div className="nav-tooltip-wrapper">
+                                    <Link to="/cart" className="nav-link active cart-icon"><FaShoppingCart />
+                                        {
+                                            cartCount > 0 && (<span className="cart-count">{cartCount}</span>)
+                                        }
+                                    </Link>
+                                    <span className="nav-tooltip">Cart</span>
+                                </div>
                             </li>
                             <li className="nav-item user-menu">
-                                <button className="user-icon-btn" onClick={() => setShowUserPopup(!showUserPopup)}>
-                                    <FaUser />
-                                </button>
-                                {
-                                    showUserPopup && (
-                                        <div className="user-popup">
-                                            <h5>Hello!</h5>
-                                            <p> Access account, and manage orders</p>
-                                            <button className="login-signup-btn" onClick={() => {
-                                                setShowLogin(true);
-                                                setShowUserPopup(false);
-                                            }}>
-                                                Login / Signup
-                                            </button>
-                                            <hr />
-                                            {
-                                                dropdownMenu.map((item) => (
-                                                    <p className="private-login" key={item.id}>{item.link}</p>
-                                                ))
-                                            }
-                                        </div>
-                                    )}
+                                <div className="nav-tooltip-wrapper" ref={userMenuRef}>
+                                    <button className="user-icon-btn" onClick={() => setShowUserPopup(!showUserPopup)}>
+                                        <FaUser />
+                                    </button>
+                                    <span className="nav-tooltip">Register</span>
+                                    {
+                                        showUserPopup && (
+                                            <div className="user-popup">
+                                                <h5>Hello!</h5>
+                                                <p> Access account, and manage orders</p>
+                                                <button className="login-signup-btn" onClick={() => {
+                                                    setShowLogin(true);
+                                                    setShowUserPopup(false);
+                                                }}>
+                                                    Login / Signup
+                                                </button>
+                                                <hr />
+                                                {
+                                                    dropdownMenu.map((item) => (
+                                                        <p className="private-login" key={item.id}>{item.link}</p>
+                                                    ))
+                                                }
+                                            </div>
+                                        )}
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -96,8 +127,8 @@ const Navbar = () => {
 
             {
                 showLogin && (
-                    <div className="auth-overlay">
-                        <div className="auth-modal">
+                    <div className="auth-overlay" onClick={() => setShowLogin(false)}>
+                        <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
                             <button className="close-btn" onClick={() => setShowLogin(false)}>×</button>
                             <Login openSignup={() => {
                                 setShowLogin(false);
@@ -109,8 +140,8 @@ const Navbar = () => {
 
             {
                 showSignup && (
-                    <div className="auth-overlay">
-                        <div className="auth-modal">
+                    <div className="auth-overlay" onClick={() => setShowSignup(false)}>
+                        <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
                             <button className="close-btn" onClick={() => setShowSignup(false)}> × </button>
                             <Signup openLogin={() => {
                                 setShowSignup(false);
@@ -123,29 +154,36 @@ const Navbar = () => {
 
             {
                 showSearch && (
-                    <div className="search-container">
-                        <div className="search-box">
-                            <input type="text" placeholder="Search products..." value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)} autoFocus />
+                    <div className="search-popup-overlay" onClick={handleCloseSearch}>
+                        <div className="search-popup" onClick={(e) => e.stopPropagation()}>
+                            <div className="search-popup-input">
+                                <input type="text" placeholder="Search products..." value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)} autoFocus />
 
-                            <button className="close-search" onClick={handleCloseSearch}>
-                                <FaTimes />
-                            </button>
+                                <button className="search-popup-close" onClick={handleCloseSearch} aria-label="Close search">
+                                    <FaTimes />
+                                </button>
+
+                            </div>
+
+                            {
+                                searchTerm && (
+                                    <div className="search-popup-results">
+
+                                        {
+                                            searchResults.length > 0 && (
+                                                searchResults.map((product) => (
+                                                    <Link to={`/product/${product.id}`} key={product.id} className="search-popup-item"
+                                                        onClick={handleCloseSearch}>
+                                                        {product.title}
+                                                    </Link>
+                                                ))
+                                            )
+                                        }
+
+                                    </div>
+                                )}
                         </div>
-
-                        {
-                            searchTerm && (
-                                <div className="search-results">
-                                    {
-                                        searchResults.length > 0 ? (searchResults.map((product) => (
-                                            <Link to={`/product/${product.id}`} key={product.id} className="search-result-item"
-                                                onClick={handleCloseSearch}>
-                                                {product.title}
-                                            </Link>
-                                        ))) : (<p className="no-results">No products found</p>
-                                        )}
-                                </div>
-                            )}
                     </div>
                 )}
         </>
