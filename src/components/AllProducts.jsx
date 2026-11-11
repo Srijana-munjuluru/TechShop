@@ -101,12 +101,9 @@ function AllProducts() {
     return (
         <>
             <div className="products-page">
-
                 <aside className="filter-sidebar">
-
                     <h3>Sort By</h3>
                     <hr />
-
                     <div className="sort-menu">
                         {
                             sortMenu.map((item) => (
@@ -148,30 +145,18 @@ function AllProducts() {
                     <h4 className="price-heading">Price</h4>
 
                     <div className="price-range">
-                        <p className="selected-price">
-                            ₹{priceRange.toLocaleString("en-IN")}
-                        </p>
+                        <p className="selected-price">₹{priceRange.toLocaleString("en-IN")}</p>
 
-                        <input
-                            type="range"
-                            min="449"
-                            max="19990"
-                            step="100"
-                            value={priceRange}
-                            onChange={(e) =>
-                                setPriceRange(Number(e.target.value))
-                            }
-                        />
+                        <input type="range" min="449" max="19990" step="100" value={priceRange}
+                            onChange={(e) => setPriceRange(Number(e.target.value))} />
                     </div>
 
-                    {hasActiveFilters && (
-                        <button
-                            className="clear-filters"
-                            onClick={handleClearFilters}
-                        >
-                            Clear All Filters
-                        </button>
-                    )}
+                    {
+                        hasActiveFilters && (
+                            <button className="clear-filters" onClick={handleClearFilters}>
+                                Clear All Filters
+                            </button>
+                        )}
                 </aside>
 
                 <main className="all-products">
@@ -189,15 +174,12 @@ function AllProducts() {
                                     <hr />
 
                                     <p>₹{product.finalPrice}
-                                        <del style={{ color: "gray" }}>
-                                            ₹{product.originalPrice}
-                                        </del>
+                                        <del style={{ color: "gray" }}>₹{product.originalPrice}</del>
                                     </p>
 
                                     <button className={`addtocart ${addedProductId === product.id ? "added" : ""}`}
                                         onClick={() => handleAddToCart(product)}>
-                                        {
-                                            addedProductId === product.id ? "Added" : "Add to Cart"}
+                                        {addedProductId === product.id ? "Added" : "Add to Cart"}
                                     </button>
                                 </div>
                             ))
