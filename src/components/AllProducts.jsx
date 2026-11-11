@@ -16,6 +16,7 @@ function AllProducts() {
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [addedProductId, setAddedProductId] = useState(null);
+    const [priceRange, setPriceRange] = useState(19990);
 
     const handleBrandChange = (brand) => {
         setSelectedBrands((previousBrands) =>
@@ -33,6 +34,12 @@ function AllProducts() {
         );
     };
 
+    const getPrice = (price) => {
+        return Number(
+            String(price).replace(/[₹,]/g, "")
+        );
+    };
+
     let filteredProducts = productsData.filter((product) => {
 
         const brandMatch =
@@ -43,14 +50,11 @@ function AllProducts() {
             selectedCategories.length === 0 ||
             selectedCategories.includes(product.category);
 
-        return brandMatch && categoryMatch;
-    });
+        const priceMatch =
+            getPrice(product.finalPrice) <= priceRange;
 
-    const getPrice = (price) => {
-        return Number(
-            String(price).replace(/[₹,]/g, "")
-        );
-    };
+        return brandMatch && categoryMatch && priceMatch;
+    });
 
     if (selectedSort === "Price(Lowest First)") {
         filteredProducts = [...filteredProducts].sort(
@@ -85,8 +89,14 @@ function AllProducts() {
         setSelectedSort("");
         setSelectedBrands([]);
         setSelectedCategories([]);
+        setPriceRange(19990);
     };
 
+    const hasActiveFilters =
+        selectedSort !== "" ||
+        selectedBrands.length > 0 ||
+        selectedCategories.length > 0 ||
+        priceRange !== 19990;
 
     return (
         <>
@@ -135,13 +145,36 @@ function AllProducts() {
                         ))
                     }
 
-                    <button className="clear-filters" onClick={handleClearFilters}>
-                        Clear All Filters
-                    </button>
+                    <h4 className="price-heading">Price</h4>
+
+                    <div className="price-range">
+                        <p className="selected-price">
+                            ₹{priceRange.toLocaleString("en-IN")}
+                        </p>
+
+                        <input
+                            type="range"
+                            min="449"
+                            max="19990"
+                            step="100"
+                            value={priceRange}
+                            onChange={(e) =>
+                                setPriceRange(Number(e.target.value))
+                            }
+                        />
+                    </div>
+
+                    {hasActiveFilters && (
+                        <button
+                            className="clear-filters"
+                            onClick={handleClearFilters}
+                        >
+                            Clear All Filters
+                        </button>
+                    )}
                 </aside>
 
                 <main className="all-products">
-                    <h2>All Products</h2>
                     <div className="products-grid">
                         {
                             filteredProducts.map((product) => (

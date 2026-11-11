@@ -37,7 +37,6 @@ function Cart() {
     return (
         <div className="cart-page">
             <div className="cart-items">
-                <h2>My Cart ({totalItems})</h2>
                 {
                     cartItems.map((item) => (
 
